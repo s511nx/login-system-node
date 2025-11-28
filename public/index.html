@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Auth system</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+        <h1> welcome to Auth system</h1>
+        <script>
+            console.log("INLINE SCRIPT WORKING");
+        </script>
+        
+        <h2>sign in </h2>
+        <form id="registerForm">
+         <label for="email">Email:</label>
+         <input id ="email" name = "email" type=" email" required>
+         <br><br>
+         <label for="password">Password:</label>
+         <input id ="password" name = "password" type = "password" required>
+         <br><br>
+         <button type = "submit">Create Account </button>
+        </form>
+        <p>
+            Already have an account?
+            <a href="login.html" style="color: blue;">Log in here</a>
+        </p>
+        <p id="message"></p>
+    </div>
+        <script src="app.js"></script>
+    </body>
+</html>
