@@ -6,6 +6,7 @@ require("dotenv").config();
 const { Pool } = require("pg");
 const app = express();
 console.log("DATABASE_URL:", process.env.DATABASE_URL);
+console.log("RAW DATABASE_URL from env:", JSON.stringify(process.env.DATABASE_URL));
 
 try {
     const url = new URL(process.env.DATABASE_URL);
