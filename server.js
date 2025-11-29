@@ -6,6 +6,13 @@ require("dotenv").config();
 const { Pool } = require("pg");
 const app = express();
 console.log("DATABASE_URL:", process.env.DATABASE_URL);
+
+try {
+    const url = new URL(process.env.DATABASE_URL);
+    console.log("DB HOST:", url.hostname);
+  } catch (e) {
+    console.error("❌ Invalid DATABASE_URL format", e);
+  }
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
