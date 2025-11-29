@@ -15,7 +15,7 @@ registerForm.addEventListener("submit" , function(event){
         email:email,
         password:password
     };
-    fetch("http://localhost:3000/register", {
+    fetch("/register", {
         method: "POST",
         headers: {
             "content-type":"application/json"
