@@ -5,7 +5,7 @@ const path = require("path");
 require("dotenv").config();
 const { Pool } = require("pg");
 const app = express();
-
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -45,10 +45,10 @@ function auth(req , res , next)  {
     }
   
 }
-
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname , "index.html"));
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
 app.post("/register", (req, res) => {
 const email = req.body.email.trim().toLowerCase();
 
@@ -123,5 +123,5 @@ app.get("/profile" , auth , (req , res) =>  {
 });
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log("Server is running on port 3000");
+    console.log(`Server is running on port ${PORT}`);
 });

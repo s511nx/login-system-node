@@ -10,7 +10,7 @@ if (!token) {
    
 }else {
 
-fetch("http://localhost:3000/profile", {
+fetch("/profile", {
     method: "GET",
     headers: {
         "Authorization": `Bearer ${token}`
