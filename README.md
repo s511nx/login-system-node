@@ -1,96 +1,108 @@
-🔐 Login Authentication System
+A full-stack authentication system built using Node.js, Express.js, PostgreSQL (Neon DB), JWT, and Vanilla JavaScript, featuring secure backend logic and a clean, functional frontend.
 
-A simple and secure authentication system built using:
+🌐 Live Demo
 
-Node.js
-
-Express.js
-
-JWT (JSON Web Token)
-
-Bcrypt.js
-
-Neon PostgreSQL Database
+🔗 https://login-system-node.onrender.com/login.html
 
 ⚙️ Features
 
 ✔️ User Registration
 
-✔️ User Login
+✔️ Secure Login with JWT
 
 ✔️ Password Hashing (bcrypt)
 
-✔️ Protected Profile Route
+✔️ Protected Profile Page
 
-✔️ Token-Based Authentication (JWT)
+✔️ Authentication Middleware
 
-✔️ Cloud Database using Neon PostgreSQL
+✔️ Hosted on Render
 
-🚀 How to Run the Project
-1. Install Dependencies
-npm install
+✔️ Neon PostgreSQL Cloud Database
 
-2. Create a .env file in the project root
+✔️ Complete Frontend + Backend System
 
-Add the following environment variables (without real values):
+🏗️ Tech Stack
+Backend:
 
-DATABASE_URL=your_neon_database_url
-JWT_SECRET=your_jwt_secret
+Node.js
 
+Express.js
 
-⚠️ Do NOT commit the real .env values to GitHub.
+Bcrypt.js
 
-3. Start the Server
-node server.js
+JSON Web Tokens (JWT)
 
+Neon PostgreSQL (pg)
 
-If everything is correct, you should see:
+Frontend:
 
-Server is running on port 3000
-✅ Connected to Neon PostgreSQL
+HTML
+
+CSS
+
+JavaScript (Fetch API)
+
+Deployment:
+
+Render
+
+GitHub
 
 📁 Folder Structure
 /public
-   ├── index.html
-   ├── login.html
-   ├── profile.html
-   ├── style.css
-   ├── login.js
-   ├── profile.js
+    ├── index.html
+    ├── login.html
+    ├── profile.html
+    ├── style.css
+    ├── login.js
+    ├── profile.js
 server.js
 package.json
-.env  (ignored via .gitignore)
+.gitignore
+.env (ignored)
+
+🚀 How to Run Locally
+1️⃣ Install dependencies
+npm install
+
+2️⃣ Create a .env file
+DATABASE_URL=your_neon_postgres_url
+JWT_SECRET=your_secret
+
+3️⃣ Start the server
+node server.js
+
+
+Server will run on:
+👉 http://localhost:3000
 
 🔐 Authentication Flow
 
-User registers → data stored in PostgreSQL with hashed password
+User registers → stored in PostgreSQL with hashed password
 
-User logs in → server returns a signed JWT token
+User logs in → server returns JWT token
 
-User opens profile → frontend sends token in headers
+Token saved in localStorage
 
-Middleware validates token → returns user data
+Profile page sends request with Authorization: Bearer <token>
 
-📌 Notes
+Middleware verifies token
 
-.env file is ignored automatically (via .gitignore)
+User info is returned
 
-Uses PostgreSQL (Neon) instead of MySQL
+📌 Future Improvements
 
-Database connection handled using pg library
+Password reset
 
-Project is structured to easily deploy on Render or other platforms
+Change email/password
 
-💡 Future Improvements (Optional)
+Refresh tokens
 
-Add logout button
+Better UI with TailwindCSS
 
-Add password reset feature
-
-Add refresh tokens
-
-Improve frontend UI/UX
+Database migrations
 
 ✨ Author
 
-Sultan Alotaibi
+👤 Sultan Alotaibi
