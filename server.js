@@ -1,15 +1,31 @@
-
 const express = require("express");
-const mysql = require("mysql2");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const path = require("path");
+require("dotenv").config();
+const { Pool } = require("pg");
 const app = express();
 
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false, 
+    },
+  });
+  
+ 
+  pool
+    .connect()
+    .then((client) => {
+      console.log("✅ Connected to Neon PostgreSQL");
+      client.release();
+    })
+    .catch((err) => {
+      console.error("❌ Database connection failed", err);
+    });
 app.use(express.json());
 app.use(express.static("public"));
 
-require("dotenv").config();
 function auth(req , res , next)  {
     console.log("middleware is running ");
     console.log(req.headers.authorization);
@@ -30,41 +46,26 @@ function auth(req , res , next)  {
   
 }
 
-const db = mysql.createConnection({
-host : process.env.DB_HOST,
-port : 3306,
-user : process.env.DB_USER,
-password : process.env.DB_PASS,
-database: process.env.DB_NAME
-
-});
-db.connect((err) => {
-    if (err) {
-        console.log("DataBase connection failed ", err);
-    } else {
-        console.log("Connected to Mysql successfully");
-    }
-});
 app.get("/", (req, res) => {
-    res.sendfile(path.json(_dirname , "index.html"));
+    res.sendFile(path.join(__dirname , "index.html"));
 });
 app.post("/register", (req, res) => {
 const email = req.body.email.trim().toLowerCase();
 
 const password = req.body.password;
 
-db.query("SELECT * FROM Users WHERE email = ?", 
+pool.query("SELECT * FROM users WHERE email = $1", 
 [email], 
 (err,result) => {
 if (err) {
     return res.status(500).json({message:"Error happened "})
 }
-if (result.length > 0 ) {
+if (result.rows.length > 0 ) {
     return res.status(400).json({message:"Email already exists "})
 } 
-if (result.length == 0 ) {
+if (result.rows.length == 0 ) {
     const hashedpassword = bcryptjs.hashSync(password,10);
-    db.query("INSERT INTO Users (email,password) VALUES (?,?)", [email,hashedpassword],
+    pool.query("INSERT INTO users (email,password) VALUES ($1, $2)", [email,hashedpassword],
     (err,insertResult) => {
         if (err) {
             return res.status(500).json({message:"Error happened"});
@@ -80,16 +81,16 @@ const email = req.body.email.trim().toLowerCase();
 
 const password = req.body.password;
 
-db.query("SELECT * FROM Users WHERE email = ?" ,
+pool.query("SELECT * FROM users WHERE email = $1" ,
 [email,], 
 (err,result) => {
     if (err) {
    return res.status(500).json({message:"Error happened "})
 } 
-if (result.length === 0 ) {
+if (result.rows.length === 0 ) {
     return res.status(400).json({message:"Email not found"})
 }
-const user = result[0];
+const user = result.rows[0];
 const isPasswordCorrect = bcryptjs.compareSync(password,user.password);
 if (isPasswordCorrect  ==false ) {
 return res.status(400).json({message:" wrong password"})
@@ -108,15 +109,15 @@ return res.json({
 });
 app.get("/profile" , auth , (req , res) =>  {
  const userId = req.user.id;
- db.query("SELECT id, email FROM Users WHERE id =?",[userId],(err,result)=> {
+ pool.query("SELECT id, email FROM users WHERE id =$1",[userId],(err,result)=> {
     if (err){
         return res.status(500).json({ message: "Database error"});
 
     }
-    if (result.length==0){
+    if (result.rows.length==0){
         return res.status(404).json({ message: "User not found"});
     }
- return res.json(result[0]);
+ return res.json(result.rows[0]);
 
     });
 });
